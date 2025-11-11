@@ -1,9 +1,10 @@
 "use client";
+import { getImagePath } from "@/src/utils";
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
 import { useState } from "react";
 import { TbPhotoPlus } from "react-icons/tb";
-export default function ImageUpload() {
+export default function ImageUpload({ image }: { image: string | undefined }) {
   const [imageURL, setImageUrl] = useState("");
   return (
     <CldUploadWidget
@@ -11,7 +12,8 @@ export default function ImageUpload() {
       onSuccess={(result, { widget }) => {
         if (result.event === "success") {
           widget.close();
-
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-ignore
           setImageUrl(result.info?.secure_url);
         }
       }}
@@ -50,7 +52,19 @@ export default function ImageUpload() {
               )}
             </div>
           </div>
-          <input type="hidden" name="image" value={imageURL} />
+          {image && !imageURL && (
+            <div className="space-y-2">
+              <label htmlFor="">Imagen Actual:</label>
+              <div className="relative w-64 h-64">
+                <Image fill src={getImagePath(image)} alt="imagen Producto" />
+              </div>
+            </div>
+          )}
+          <input
+            type="hidden"
+            name="image"
+            defaultValue={imageURL ? imageURL : image}
+          />
         </>
       )}
     </CldUploadWidget>
