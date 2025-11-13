@@ -14,7 +14,7 @@ export default function OrdenesPage() {
     refreshInterval: 60000,
     revalidateOnFocus: false,
   });
-  if (isLoading) return "Cargando. un Momento Por Favor...";
+  if (isLoading) return <p> Cargando. un Momento Por Favor...</p>;
   if (data)
     return (
       <>
